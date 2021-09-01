@@ -1,39 +1,99 @@
 ---
 layout: post
-title: "Web Scraping in R"
-subtitle: "Interesting tools"
+title: "Hubot with telegram adapter"
+subtitle: "Deploying hubot as service on systemd"
 background: '/img/posts/01.jpg'
 ---
+ 
 
-<p>Never in all their history have men been able truly to conceive of the world as one: a single sphere, a globe, having the qualities of a globe, a round earth in which all the directions eventually meet, in which there is no center because every point, or none, is center — an equal earth which all men occupy as equals. The airman's earth, if free men make it, will be truly round: a globe in practice, not in theory.</p>
 
-<p>Science cuts two ways, of course; its products can be used for both good and evil. But there's no turning back from science. The early warnings about technological dangers also come from science.</p>
+```
+useradd -s /bin/bash -m nodejs
+su - nodejs 
 
-<p>What was most significant about the lunar voyage was not that man set foot on the Moon but that they set eye on the earth.</p>
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+/bin/bash
+nvm install v14.17.5
+nvm use v14.17.5
+npm install -g yo generator-hubot 
 
-<p>A Chinese tale tells of some men sent to harm a young girl who, upon seeing her beauty, become her protectors rather than her violators. That's how I felt seeing the Earth for the first time. I could not help but love and cherish her.</p>
+mkdir myhubot && cd $_
+yo hubot
 
-<p>For those who have seen the Earth from space, and for the hundreds and perhaps thousands more who will, the experience most certainly changes your perspective. The things that we share in our world are far more valuable than those which divide us.</p>
+nano external-scripts.json ## Delete line hubot-redis and node-heroku-keepalive
 
-<h2 class="section-heading">The Final Frontier</h2>
+export TELEGRAM_TOKEN=bot:token
 
-<p>There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.</p>
+```
 
-<p>There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.</p>
 
-<blockquote class="blockquote">The dreams of yesterday are the hopes of today and the reality of tomorrow. Science has not yet mastered prophecy. We predict too much for the next year and yet far too little for the next ten.</blockquote>
+nano `scripts/test.coffee`
+```
+module.exports = (robot) ->
 
-<p>Spaceflights cannot be stopped. This is not the work of any one man or even a group of men. It is a historical process which mankind is carrying out in accordance with the natural laws of human development.</p>
+  robot.hear /badger/i, (res) ->
+    res.send "Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"
 
-<h2 class="section-heading">Reaching for the Stars</h2>
+  robot.respond /multiply (.*) and (.*)/i, (res) ->
+    val1 = res.match[1]
+    val2 = res.match[2]
 
-<p>As we got further and further away, it [the Earth] diminished in size. Finally it shrank to the size of a marble, the most beautiful you can imagine. That beautiful, warm, living object looked so fragile, so delicate, that if you touched it with a finger it would crumble and fall apart. Seeing this has to change a man.</p>
+    if val1 >  50
+      res.reply "Too hard"
+    else
+      res.reply "result is " + String(val1 * val2)
 
-<img class="img-fluid" src="https://source.unsplash.com/Mn9Fa_wQH-M/800x450" alt="Demo Image">
-<span class="caption text-muted">To go places and do things that have never been done before – that’s what living is all about.</span>
+  robot.respond /time in (.*)/i, (res) ->
+    today = new Date
+    hour = today.getHours()
+    minute = today.getMinutes()
 
-<p>Space, the final frontier. These are the voyages of the Starship Enterprise. Its five-year mission: to explore strange new worlds, to seek out new life and new civilizations, to boldly go where no man has gone before.</p>
+    city = res.match[1]
+    ctime = switch city
+      when "Almaty","almaty","alm" then  hour + ":" + minute
+      when "Moscow","moscow","msk" then (hour - 3) + ":" + minute
+      when "Kiev","kiev" then (hour - 3) + ":" + minute
+      when "London","london" then (hour - 5) + ":" + minute
+      else "I don't know"
+    res.reply "Time in " + city + " now " + ctime
+```
 
-<p>As I stand out here in the wonders of the unknown at Hadley, I sort of realize there’s a fundamental truth to our nature, Man must explore, and this is exploration at its greatest.</p>
+```
+bin/hubot -a telegram
+```
 
-<p>Placeholder text by <a href="http://spaceipsum.com/">Space Ipsum</a>. Photographs by <a href="https://unsplash.com/">Unsplash</a>.</p>
+nano `/etc/systemd/system/hubot.service`
+```
+[Unit]
+Description=Hubot
+Requires=network.target
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/nodejs/myhubot
+User=nodejs
+
+Restart=always
+RestartSec=10
+
+; Configure Hubot environment variables, use quotes around vars with whitespace as shown below.
+Environment=TELEGRAM_TOKEN=bot:token
+Environment=PATH="/home/nodejs/.nvm/versions/node/v14.17.5/bin"
+; Alternatively multiple environment variables can loaded from an external file
+;EnvironmentFile=/etc/hubot-environment
+
+ExecStart=/home/nodejs/myhubot/node_modules/.bin/coffee node_modules/hubot/bin/hubot -a telegram
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```
+systemctl daemon-reload 
+systemctl start hubot.service
+systemctl status hubot.service
+```
+
+
+![Скриншот](https://i.ibb.co/4KNxKGV/rb-hubot.png)
