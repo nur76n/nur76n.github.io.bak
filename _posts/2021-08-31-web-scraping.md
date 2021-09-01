@@ -2,7 +2,7 @@
 layout: post
 title: "Hubot with telegram adapter"
 subtitle: "Deploying hubot as service on systemd"
-background: '/img/posts/01.jpg'
+background: '/img/posts/hubot.png'
 ---
  
 
