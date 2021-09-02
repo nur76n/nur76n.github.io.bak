@@ -22,7 +22,7 @@ multipath -a "0x20150013780e8b80"
 multipath -a "0x201b0013780e8b80"
 ```
 
-`cat /etc/multipath.conf `
+Редактируем файл `/etc/multipath.conf `
 ```
 blacklist {
     wwid .*
