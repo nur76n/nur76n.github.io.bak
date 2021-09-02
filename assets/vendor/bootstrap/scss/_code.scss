@@ -33,8 +33,11 @@ pre {
   display: block;
   @include font-size($code-font-size);
   color: $pre-color;
-  padding: 10px;
-  border-radius: 5px;
+  border-radius: 8px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 
   // Account for some code outputs that place code tags in pre tags
   code {
