@@ -1,0 +1,11 @@
+--2021-09-01 21:27:54--  https://www.ariba.com/ru-ru/-/media/aribacom/page-images/03-ariba-network/0320000aribanetworkforsuppliers/hero_aribanetworkforsuppliers.jpg?h=650
+Resolving www.ariba.com (www.ariba.com)... 161.47.71.75, 192.36.148.17, 192.58.128.30, ...
+Connecting to www.ariba.com (www.ariba.com)|161.47.71.75|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 159953 (156K) [image/jpeg]
+Saving to: ‘hero_aribanetworkforsuppliers.jpg?h=650’
+
+hero_aribanetworkforsuppliers.jpg?h=650                0%[                                                                                                                      ]       0  --.-KB/s               hero_aribanetworkforsuppliers.jpg?h=650               14%[================>                                                                                                     ]  22.73K   112KB/s               hero_aribanetworkforsuppliers.jpg?h=650               34%[=======================================>                                                                              ]  53.52K   132KB/s               hero_aribanetworkforsuppliers.jpg?h=650               68%[================================================================================>                                     ] 107.42K   177KB/s               hero_aribanetworkforsuppliers.jpg?h=650              100%[=====================================================================================================================>] 156.20K   254KB/s    in 0.6s    
+
+2021-09-01 21:27:55 (254 KB/s) - ‘hero_aribanetworkforsuppliers.jpg?h=650’ saved [159953/159953]
+
