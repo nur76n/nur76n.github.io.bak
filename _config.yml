@@ -1,7 +1,7 @@
 title:              Заметки сисадмина
 email:              nur76n@mail.ru
 description:        
-author:             Нуржан
+author:             
 baseurl:            ""
 url:                "https://znb.kz"
 
@@ -17,7 +17,7 @@ google_analytics:   UA-XXXXXXXXX-X # out your google-analytics code
 
 # Build settings
 markdown:           kramdown
-paginate:           5
+paginate:           10
 paginate_path:      "/posts/page:num/"
 plugins:
   - jekyll-feed

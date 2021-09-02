@@ -10,11 +10,15 @@ background: '/img/posts/multipath.png'
 ```
 apt install multipath-tools
 ```
-
+Включаем автозапуск и стартуем службу
 ```
 systemctl enable multipath-tools
 systemctl start multipath-tools
 ```
+Теперь приступаем к настройке.
+  
+  
+
 ## Настройка
 Добавляем wwid устройств в белый список
 ```
@@ -59,18 +63,19 @@ defaults {
 }
 ```
 
-###### Применяем настройки
+Применяем настройки
 ```
 multipathd -k"reconfigure"
 ```
-###### Проверяем состояние и дебаг информацию
+Проверяем состояние и дебаг информацию
 ```
 multipath -ll
 multipath -v4
 ```
+----
 
-
-#### Настройка LVM. Редактируем файл `/etc/lvm/lvm.conf`: 
+#### Настройка LVM
+Редактируем файл `/etc/lvm/lvm.conf`: 
 
 Комментим эту строку
 ```
