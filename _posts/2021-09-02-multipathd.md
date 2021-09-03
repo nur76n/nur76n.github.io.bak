@@ -24,34 +24,16 @@ systemctl start multipath-tools
 #### Настройка
 ---
 
-Добавляем wwid устройств в белый список
-```
-multipath -a "0x20150013780e8b80"
-multipath -a "0x201b0013780e8b80"
-```
-
 Редактируем файл `/etc/multipath.conf `
 ```
-blacklist {
+lacklist {
     wwid .*
 }
 
 blacklist_exceptions {
-    wwid "0x20150013780e8b80"
-    wwid "0x201b0013780e8b80"
+    wwid "0x201.0013780....0"
 }
 
-multipaths {
-    multipath {
-        wwid "0x20150013780e8b80"
-        alias mpath_san2_vol1
-    }
-
-    multipath {
-        wwid "0x201b0013780e8b80"
-        alias mpath_san2_vol2
-    }
-}
 
 defaults {
     polling_interval        2
@@ -64,7 +46,9 @@ defaults {
     no_path_retry           5
     failback                immediate
     rr_weight               priorities
+    find_multipaths         on
 }
+
 ```
 
 Применяем настройки
@@ -103,9 +87,15 @@ global_filter = [ "a|/dev/sda|", "a|/dev/sdb|", "a|/dev/mapper/mpath.*|", "r|/de
 ```
 global_filter = ["r|/dev/disk/by-id/scsi-SQsan_XS3226.*|", "r|/dev/zd.*|", "r|/dev/mapper/pve-.*|", "r|/dev/mapper/.*-(vm|base)--[0-9]+--disk--[0-9]+|"]
 ```
+или блочим по ip
+```
+global_filter = ["r|/dev/disk/by-path/ip-.*|", "r|/dev/zd.*|", "r|/dev/mapper/pve-.*|" "r|/dev/mapper/.*-(vm|base)--[0-9]+--disk--[0-9]+|"]
+```
+
 
 ```
 pvscan
+vgscan
 lsblk
 ```
 

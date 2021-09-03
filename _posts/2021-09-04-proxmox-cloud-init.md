@@ -12,18 +12,44 @@ background: '/img/posts/01.jpg'
 ```
 wget https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img
 ```
-Создаем ВМ, импортируем скачанный образ в local-lvm, подключаем диск в созданную машину, увеличиваем размер диска:
+
+Создаем ВМ
 ```
 qm create 9020 --memory 2048 --net0 virtio,bridge=vmbr0,tag=18 --agent enabled=1 --cores 2 --ostype l26 --name ubuntu20-template
+```
+
+импортируем скачанный образ в local-lvm
+```
 qm importdisk 9020 focal-server-cloudimg-amd64.img local-lvm
+```
+
+подключаем диск в созданную машину
+```
 qm set 9020 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-9020-disk-0
+```
+
+увеличиваем размер диска
+```
 qm resize 9020 scsi0 +8G
 ```
 
-Добавляем устройство CloudInit Drive, устанавливаем загрузочное устройство, устанавливаем отображание консоли через xterm.js: 
+Не забываем установить ограничение на ввод-вывод, чтобы машина не смогла забрать все ресурсы
+```
+qm set 9020 --scsi0 local-lvm:base-9120-disk-0,mbps_rd=100,mbps_wr=100,iops_rd=100,iops_wr=100
+```
+
+Добавляем устройство CloudInit Drive 
 ```
 qm set 9020 --scsi2 local-lvm:cloudinit
+```
+
+устанавливаем загрузочное устройство
+```
 qm set 9020 --boot c --bootdisk scsi0
+```
+
+устанавливаем отображание консоли через xterm.js
+```
 qm set 9020 --serial0 socket --vga serial0
 ```
 
@@ -42,10 +68,10 @@ qm set 9020 --serial0 socket --vga serial0
 qm set 9020 --ciuser srv-admin --cipassword srv-password --searchdomain corp.company.kz --nameserver 10.0.1.11,10.0.1.12 --ipconfig0 ip=10.0.8.251/24,gw=10.0.8.1 --sshkeys /path/to/id_rsa.pub
 ```
 
-Включаем машину 
 
 #### Донастраиваем систему
-
+---
+Включаем машину 
 
 Обновляем систему
 ```
@@ -61,5 +87,7 @@ fi
 ```
 sudo dpkg-reconfigure tzdata
 ```
+
+Выключаем машину
 
 Конвертируем в шаблон
