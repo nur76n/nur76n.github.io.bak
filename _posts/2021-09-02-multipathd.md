@@ -5,7 +5,9 @@ subtitle: "Установка и настройка"
 background: '/img/posts/multipath.png'
 ---
 
-## Установка
+
+#### Установка
+---
 
 ```
 apt install multipath-tools
@@ -19,7 +21,9 @@ systemctl start multipath-tools
   
   
 
-## Настройка
+#### Настройка
+---
+
 Добавляем wwid устройств в белый список
 ```
 multipath -a "0x20150013780e8b80"
@@ -72,9 +76,10 @@ multipathd -k"reconfigure"
 multipath -ll
 multipath -v4
 ```
-----
+
 
 #### Настройка LVM
+---
 При запуске выполняется команда vgscan, которая выполнит поиск меток LVM на блочных устройствах системы с целью определения того, какие из них представляют собой физические тома, а также получения метаданных и создания списков групп томов. Имена физических томов хранятся в файле `/etc/lvm/.cache` на каждом узле в системе. Последующие команды будут обращаться к этому файлу, при этом не будет необходимости в повторном сканировании.
 
 С помощью фильтров, определяемых в `lvm.conf`, можно управлять тем, какие устройства будут сканироваться. Фильтры представляют собой набор регулярных выражений, применяемых к именам устройств в каталоге `/dev` с целью разрешения или запрета определения блочного устройства.
@@ -104,8 +109,10 @@ pvscan
 lsblk
 ```
 
-#### Полезные ссылки
+<iframe width="560" height="315" src="https://www.youtube.com/embed/4Kz5EkhPCfU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+#### Полезные ссылки
+---
 * [Статья от RedHat о фильрах LVM](https://access.redhat.com/documentation/ru-ru/red_hat_enterprise_linux/5/html/logical_volume_manager_administration/lvm_filters)
 * [Корректность фильтра можно проверить на сайте](https://regex101.com/)
 * [Конфигурационный файл DM-Multipath
