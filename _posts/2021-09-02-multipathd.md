@@ -9,11 +9,11 @@ background: '/img/posts/multipath.png'
 #### Установка
 ---
 
-```
+```bash
 apt install multipath-tools
 ```
 Включаем автозапуск и стартуем службу
-```
+```bash
 systemctl enable multipath-tools
 systemctl start multipath-tools
 ```
@@ -25,7 +25,7 @@ systemctl start multipath-tools
 ---
 
 Редактируем файл `/etc/multipath.conf `
-```
+```bash
 blacklist {
     wwid .*
 }
@@ -52,11 +52,11 @@ defaults {
 ```
 
 Применяем настройки
-```
+```bash
 multipathd -k"reconfigure"
 ```
 Проверяем состояние и дебаг информацию
-```
+```bash
 multipath -ll
 multipath -v4
 ```
@@ -75,25 +75,25 @@ multipath -v4
 Редактируем файл `/etc/lvm/lvm.conf`: 
 
 Комментим эту строку
-```
+```bash
 global_filter = [ "r|/dev/zd.*|", "r|/dev/mapper/pve-.*|" "r|/dev/mapper/.*-(vm|base)--[0-9]+--disk--[0-9]+|"]
 ```
 
 И добавляем эту
-```
+```bash
 global_filter = [ "a|/dev/sda|", "a|/dev/sdb|", "a|/dev/mapper/mpath.*|", "r|/dev/sd.*|", "r|/dev/zd.*|", "r|/dev/mapper/pve-.*|", "r|/dev/mapper/.*-(vm|base)--[0-9]+--disk--[0-9]+|"]
 ```
 или эту (где запрещаем по модели SAN)
-```
+```bash
 global_filter = ["r|/dev/disk/by-id/scsi-SQsan_XS3226.*|", "r|/dev/zd.*|", "r|/dev/mapper/pve-.*|", "r|/dev/mapper/.*-(vm|base)--[0-9]+--disk--[0-9]+|"]
 ```
 или блочим по ip
-```
+```bash
 global_filter = ["r|/dev/disk/by-path/ip-.*|", "r|/dev/zd.*|", "r|/dev/mapper/pve-.*|" "r|/dev/mapper/.*-(vm|base)--[0-9]+--disk--[0-9]+|"]
 ```
 
 
-```
+```bash
 pvscan
 vgscan
 lsblk
