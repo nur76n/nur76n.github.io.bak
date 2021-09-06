@@ -99,8 +99,6 @@ vgscan
 lsblk
 ```
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/4Kz5EkhPCfU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 #### Полезные ссылки
 ---
 * [Статья от RedHat о фильрах LVM](https://access.redhat.com/documentation/ru-ru/red_hat_enterprise_linux/5/html/logical_volume_manager_administration/lvm_filters)
