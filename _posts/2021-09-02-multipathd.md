@@ -26,7 +26,7 @@ systemctl start multipath-tools
 
 Редактируем файл `/etc/multipath.conf `
 ```
-lacklist {
+blacklist {
     wwid .*
 }
 
