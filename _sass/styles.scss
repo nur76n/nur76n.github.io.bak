@@ -1,3 +1,17 @@
 // Import Core Clean Blog SCSS
 @import "../assets/vendor/startbootstrap-clean-blog/scss/styles.scss";
 @import "../assets/vendor/syntax-highlighting/github.scss";
+
+
+pre.highlight > button {
+    opacity: 0;
+  }
+  
+  pre.highlight:hover > button {
+    opacity: 1;
+  }
+  
+  pre.highlight > button:active,
+  pre.highlight > button:focus {
+    opacity: 1;
+  }
